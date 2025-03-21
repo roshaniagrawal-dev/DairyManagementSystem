@@ -1,0 +1,27 @@
+﻿@model DairyManagementSystem.Models.SalesMemo
+
+<div class="cool-form">
+    
+    <form id="EditSalesForm" class="container mt-4">
+        <input asp-for="SalesMemoId" type="hidden"/>
+        <input asp-for="PostingDate" type="hidden"/>
+        <input asp-for="IsActive" type="hidden"/>
+        <input asp-for="CreatedBy" type="hidden"/>
+         <div class="Buttons_sales col-sm-4">
+            <button type="submit" id="submitButton" class="btn btn-primary pull-right">Update</button>
+            <button type="reset" class="btn btn-primary pull-right">Reset</button>
+            <a class="pull-right" id="ExportExcelTable"><i class="bi bi-filetype-xls"></i>Export Excel </a>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label asp-for="Code"  class="font-weight-bold cool-label">Code</label>
+                <input asp-for="Code" type="text" class="form-control cool-input" readonly/>
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="SalesDate" class="font-weight-bold cool-label">Sales Date</label>
+                <input asp-for="SalesDate" id="SalesDate" type="date" class="form-control cool-input" />
+                <span asp-validation-for="SalesDate" id="SalesDateError" class="text-danger"></span>
+            </div>
+        </div>
+    </form>
+</div>

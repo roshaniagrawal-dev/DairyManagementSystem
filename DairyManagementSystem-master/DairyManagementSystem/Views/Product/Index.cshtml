@@ -1,0 +1,235 @@
+﻿@model List<DairyManagementSystem.ProductView>
+@{
+    var ListEmp = Model;
+}
+<div class="container mt-4">
+    <div class ="row">
+        <div class="lineblockRL">
+            <h1><i class="bi bi-database"></i> Manage Products</h1>
+            <a class="pull-right end-50 actionBT" id="search-btn"><i class="bi bi-search"></i>&nbsp;<span>Search</span>  </a>
+            &nbsp;<a class="pull-right end-50 actionBT" id="add-btn" asp-action="Create" formmethod="get"><i class="bi bi-plus-circle"></i>&nbsp;   ADD </a>
+            &nbsp;<a class="pull-right end-50 actionBT" id="Export-Prod-btn" asp-action="ExportExcel"><i class="bi bi-filetype-xls"></i>&nbsp; Export Excel </a>
+        </div>
+    </div>
+    <br />
+    <form id="Serach_btn_prod" method="post">
+        <div class="row">
+            <div class="form-group col-lg-3">
+                    <input name="Code"id="Code" type="text" placeholder="Code" class="form-control cool-input" />
+            </div>
+            <div class="form-group col-lg-3">
+                <input type="text" class="form-control cool-input" placeholder="Product Name" name="ProductName" id="ProductName" value="" />
+            </div>
+            <div class="form-group col-lg-3">
+                <input class="form-control cool-input" placeholder="Selling Price" name="Price" id="Price" type="number" />
+            </div>
+            <div class="form-group col-lg-3">
+                <input class="form-control cool-input" placeholder="Purchase Rate" name="PurchaseRate" id="PurchaseRate" type="number" />
+            </div> 
+            <div class="form-group col-lg-3">
+                <input type="text" class="form-control cool-input" placeholder="HSN/SAC Code" name="Hsnsaccode" id="Hsnsaccode" value="" />
+            </div>
+            <div class="form-group col-lg-3">
+                <input class="form-control cool-input" placeholder="IGST Rate" name="Igstrate" id="Igstrate" type="number" />
+            </div>
+            <div class="form-group col-lg-3">
+                <input class="form-control cool-input" placeholder="CGST Rate" name="Cgstrate" id="Cgstrate" type="number" />
+            </div> 
+            <div class="form-group col-lg-3">
+                <input class="form-control cool-input" placeholder="SGST Rate" name="Sgstrate" id="Sgstrate" type="number" />
+            </div>
+            <div class="form-group col-lg-3">
+                <select name="CategoryId" id="CategoryId"  asp-items="ViewBag.CategoryList" class="form-control cool-input custom-select">
+                    <option value="0">Category</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-3">
+                <select name="CompanyId" id="CompanyId" asp-items="ViewBag.CompanyList" class="form-control cool-input custom-select">
+                    <option value="0">Company</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-3">
+                <select name="CompanyId" id="VendorId" asp-items="ViewBag.VenList" class="form-control cool-input custom-select">
+                    <option value="0">Vendor</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-3">
+                <select name="TypeId" id="TypeId" asp-items="ViewBag.TypeList" class="form-control cool-input custom-select">
+                    <option value="0">Type</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-3">
+                <select name="UnitId" id="UnitId" asp-items="ViewBag.UnitList" class="form-control cool-input custom-select">
+                    <option value="0">Unit</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-3">
+                <select name="ClientId" id="ClientId" asp-items="ViewBag.ClientList" class="form-control cool-input custom-select">
+                    <option value="0">Client</option>
+                </select>
+            </div>
+             <div class="col-lg-3">
+                 <div class="form-group">
+                    <select name="IsActiveStr" id="StatusId" class="form-control cool-input custom-select">
+                         <option value="">Status</option>
+                         <option value="true">Active</option>
+                         <option value="false">InActive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="float-right">
+            <button type="submit" class="btn btn-primary">Search</button> <button type="reset" class="btn btn-primary">Reset</button>
+        </div>
+    </form>
+    <br />
+    <table class="table table-striped" id="ProductTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Action</th>
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Selling Price</th>
+                <th>Purchase Rate</th>
+                <th>HSN/SAC Code</th>
+                <th>IGST Rate</th>
+                <th>CGST Rate</th>
+                <th>SGST Rate</th>
+                <th>Category</th>
+                <th>Company</th>
+                <th>Vendor</th>
+                <th>Type</th>
+                <th>Unit</th>
+                <th>Client</th>
+                <th>Posting Date</th>
+                
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+<input type="hidden" value="@(TempData["Delete"] ?? "")" id="DeleteAlert" />
+<input type="hidden" value="@(TempData["Error"] ??"")" id="Error" />
+<input type="hidden" value="@(TempData["Edit"] ??"")" id="EditAlert" />
+<input type="hidden" value="@(TempData["Create"] ??"")" id="CreateAlert" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#search-btn').click(function() {
+            $('#Serach_btn_prod').collapse('toggle');
+        });
+       var tableProd = $("#ProductTable").DataTable({
+            "ajax": { url: "/Product/GetList" },
+            "autoWidth" : false,
+            "scrollX" : true,
+            "columns": [
+                {
+                    "targets": 0, "render": function (data, type, row, meta) {
+                        return meta.row + 1; // adds id to dataset
+                    }
+                },
+                {
+                    data: "productId", "render": function (data) {
+                        return `<a href="/Product/Edit?id=${data}"><i class="bi bi-pencil"></i></a>
+                                       <a href="/Product/Delete?id=${data}" ><i class="bi bi-trash"></i></a>`;
+                    },
+                    "targets": 1
+
+                },
+                {
+                    data: "code",
+                    "targets": 2
+                },
+                {
+                    data: "productName",
+                    "targets": 3
+                },
+                {
+                    data: "price",
+                    "targets": 4
+                },
+                {
+                    data: "purchaseRate",
+                    "targets": 5
+                },
+                {
+                    data: "hsnsaccode",
+                    "targets": 2
+                },
+                {
+                    data: "igstrate",
+                    "targets": 3
+                },
+                {
+                    data: "cgstrate",
+                    "targets": 4
+                },
+                {
+                    data: "sgstrate",
+                    "targets": 5
+                }, {
+                    data: "categoryName",
+                    "targets": 6
+                },
+                {
+                    data: "companyName",
+                    "targets": 7
+                },
+                {
+                    data: "vendorName",
+                    "targets": 8
+                },
+                {
+                    data: "typeName",
+                    "targets": 9
+                },
+                {
+                    data: "unitName",
+                    "targets": 10
+                },
+                {
+                    data: "clientName",
+                    "targets": 10
+                },
+                {
+                    data: "productPostingDate",
+                    "targets":  11
+                }
+            ],
+            serverSide: false,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search",
+                "lengthMenu": "_MENU_ Items"
+            }
+       });
+        $("select[name='ProductTable_length']").addClass("custom-select");
+        $("#Serach_btn_prod").on("submit", function (e) {
+            e.preventDefault();
+            var FormData = $(this).serialize();
+            $.ajax({
+
+                url: "/Product/SearchDetails",
+                data: FormData,
+                type: "Post",
+                success: function (results) {
+                    tableProd.clear().draw();
+
+                    for (var i = 0; i < results.data.length; i++) {
+                        var newData = results.data[i];
+                        tableProd.row.add(newData);
+                    }
+                    tableProd.draw();
+
+                },
+                error: function (results) {
+
+                }
+
+            });
+        });
+    });
+</script>
+

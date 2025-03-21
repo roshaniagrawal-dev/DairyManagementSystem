@@ -1,0 +1,88 @@
+﻿@model DairyManagementSystem.Models.Vendor
+
+<h1>Edit Vendor</h1>
+<div class="cool-form">
+     <form method="post" class="container mt-4">
+        <input asp-for="VendorId" type="hidden"/>
+        <input asp-for="VendorPostingDate" type="hidden"/>
+        <input asp-for="IsActive" type="hidden" value="true"/>
+        <div class="form-group">
+            <label asp-for="Code"  class="font-weight-bold cool-label">Code</label>
+            <input asp-for="Code" type="text" class="form-control cool-input" readonly/>
+        </div>
+        <div class="form-group">
+            <label asp-for="VendorName" class="font-weight-bold cool-label">Vendor Name</label>
+            <input asp-for="VendorName" class="form-control cool-input" />
+            <span asp-validation-for="VendorName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartDate" class="font-weight-bold cool-label">Start Date</label>
+            <input asp-for="StartDate" class="form-control cool-input StartDate" type="date" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EndDate" class="font-weight-bold cool-label">End Date</label>
+            <input asp-for="EndDate" class="form-control cool-input EndDate" type="date" />
+            <label for="isOperational">
+                <input type="checkbox" id="isOperational" asp-for="isOperational"> Vendor is still operational
+            </label>
+            <span class="EndDateError text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address" class="font-weight-bold cool-label">Address</label>
+            <input asp-for="Address" class="form-control cool-input" minlength="21" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="StateCode" class="font-weight-bold cool-label">State Code</label>
+            <input asp-for="StateCode" class="form-control cool-input" />
+            <span asp-validation-for="StateCode" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="BankDetail" class="font-weight-bold cool-label">Bank Deatils</label>
+            <input asp-for="BankDetail" class="form-control cool-input" minlength="21" />
+            <span asp-validation-for="BankDetail" class="text-danger"></span>
+        </div>
+        <button type="submit" id="submit" class="btn btn-primary btn-block cool-btn">Update</button>
+    </form>
+</div>
+<input type="hidden" value="@(TempData["Error"] ??"")" id="Error" />
+@{
+    string ValidEndDate = ViewBag.ValidEndDate;
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var myValue = '@ValidEndDate';
+        if(myValue == "true"){
+            $(".EndDateError").html("Please select End date or select check box.");
+        }
+         $("#submit").on("click", function(){
+            if(!$("#isOperational").prop("checked") && $('.EndDate').val() == ""){
+            $(".EndDateError").html("Please select End date or select check box.");
+        }
+        });
+        $("#isOperational").on('change',function(){
+            if($("#isOperational").prop("checked")){
+                $(".EndDate").val("");
+                $(".EndDate").prop("disabled", true);
+            }else{
+                 $(".EndDate").prop("disabled", false);
+            }
+        });
+         $('.EndDate').on('change', function(e){
+            debugger;
+            if($('.EndDate').val()<= $('.StartDate').val()){
+                $(".EndDateError").html("Please enter End Date greater than Start Date");
+                $('.EndDate').val("");
+            }else if($('.StartDate').val()==""){
+                   $(".EndDateError").html("Please first enter start date.");
+                   $('.EndDate').val("");
+            }else{
+                 $(".EndDateError").html("");
+            }
+        });
+     });
+</script>
+    
+

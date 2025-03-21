@@ -1,0 +1,31 @@
+﻿@model DairyManagementSystem.Models.Client
+
+<h1>Edit Client</h1>
+<div class="cool-form">
+    <form method="post" class="container mt-4">
+        <input asp-for="ClientId" type="hidden"/>
+        <input asp-for="ClientPostingDate" type="hidden"/>
+        <input asp-for="IsActive" type="hidden" value="true"/>
+        <div class="form-group">
+                <label asp-for="ClientCode"  class="font-weight-bold cool-label">Code</label>
+                <input asp-for="ClientCode" type="text" class="form-control cool-input" readonly/>
+        </div>
+        <div class="form-group">
+            <label asp-for="ClientName" class="font-weight-bold cool-label">Client Name</label>
+            <input asp-for="ClientName" class="form-control cool-input" />
+            <span asp-validation-for="ClientName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ClientAddress" class="font-weight-bold cool-label">Client Address</label>
+            <input asp-for="ClientAddress" class="form-control cool-input" minLength="20" />
+            <span asp-validation-for="ClientAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MobileNo" class="font-weight-bold cool-label">Mobile No.</label>
+            <input asp-for="MobileNo" class="form-control cool-input" type="number"/>
+            <span asp-validation-for="MobileNo" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block cool-btn">Update</button>
+    </form>
+</div>
+

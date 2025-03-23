@@ -1,0 +1,21 @@
+﻿@model DairyManagementSystem.Models.Category
+
+<h1>Edit Category</h1>
+<div class="cool-form">
+    <form method="post" class="container mt-4">
+        <input asp-for="CategoryId" type="hidden"/>
+        <input asp-for="CategoryPostingDate" type="hidden"/>
+        <input asp-for="IsActive" type="hidden" value="true"/>
+        <div class="form-group">
+                <label asp-for="Code"  class="font-weight-bold cool-label">Code</label>
+                <input asp-for="Code" type="text" class="form-control cool-input" readonly/>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryName" class="font-weight-bold cool-label">Category Name</label>
+            <input asp-for="CategoryName" class="form-control cool-input" />
+            <span asp-validation-for="CategoryName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block cool-btn">Update</button>
+    </form>
+</div>
+

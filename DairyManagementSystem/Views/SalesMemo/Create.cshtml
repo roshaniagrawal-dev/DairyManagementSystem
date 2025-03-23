@@ -1,0 +1,322 @@
+﻿@model DairyManagementSystem.ViewModel.SalesMemoDetails
+
+<h2><i class="bi bi-plus-circle"></i> Add Client</h2>
+<partial name="_FormSalesMemo" model="Model.salesMemo"></partial>
+
+<table class="table table-striped" id="MapSalesMemoTable">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Clients</th>
+            @foreach (var item in Model.ListProduct)
+            {
+                <th>
+                    @item.ProductName
+                </th>
+            }
+            <th class="total-column">Total</th>
+        </tr>
+    </thead>
+</table>
+@{
+    var ListProduct = @Model.ListProduct;
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        debugger;
+
+        var columnsArray = [
+                    {
+                        "render": function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        data: "clientName",
+                    }
+        ];
+
+        @foreach (var item in Model.ListProduct)
+        {
+            <text>
+                    columnsArray.push({
+                             width : "100px",
+                            "render": function (data, type, row,meta) {
+                                debugger;
+                                var secondColumnValue = row.clientName;
+                                if (secondColumnValue === 'Rate') {
+                                    return '<input id="@item.ProductId" type="number" class="form-control" value="@item.PurchaseRate">';
+                                }else if(secondColumnValue === 'Total'){
+                                    return '0';
+                                }else if(secondColumnValue === 'Amount'){
+                                    return '0';
+                                }
+                                else{
+                                    return '<input type="number" class="form-control" value="">';
+                                }
+                            }, data : $(this).val()
+                    });
+            </text>
+        }
+
+        columnsArray.push({
+            data: "total",
+        });
+        console.log(columnsArray);
+        var tableCat = $("#MapSalesMemoTable").DataTable({
+            "ajax": { url: "/SalesMemo/GetListCreate" },
+            columns: columnsArray,
+            serverSide: false,
+            language: {
+                search: "",
+                searchPlaceholder: "Search",
+                lengthMenu: "_MENU_ Items"
+            },
+            "autoWidth" : false,
+            "columnDefs": [
+                { className: "total-column", "targets": -1 }
+                ],
+                "initComplete": function(settings, json) {
+                    var table = this.api();
+
+                    var newRow = $('<tr>');
+
+                    var numColumns = $('#MapSalesMemoTable tbody tr:first td').length;
+
+                    for (var i = 0; i < numColumns; i++) {
+                        if(i==1){
+                            var inputValue ="Total";
+                        }else{
+                        var inputValue = "0";
+                        }// Prompt the user for input
+                        newRow.append('<td>' + inputValue + '</td>');
+                    }
+
+                    tableCat.row.add(newRow);
+                    tableCat.draw();
+
+                    var newRow = $('<tr>');
+
+                    var numColumns = $('#MapSalesMemoTable tbody tr:first td').length;
+
+                    for (var i = 0; i < numColumns; i++) {
+                        if(i==1){
+                            var inputValue ="Rate";
+                        }else{
+                        var inputValue = "0";
+                        }// Prompt the user for input
+                        newRow.append('<td>' + inputValue + '</td>');
+                    }
+
+                    tableCat.row.add(newRow);
+                    tableCat.draw();
+
+                    var newRow = $('<tr>');
+
+                    var numColumns = $('#MapSalesMemoTable tbody tr:first td').length;
+
+                    for (var i = 0; i < numColumns; i++) {
+                        if(i==1){
+                            var inputValue ="Amount";
+                        }else{
+                        var inputValue = "0";
+                        }// Prompt the user for input
+                        newRow.append('<td>' + inputValue + '</td>');
+                    }
+
+                    tableCat.row.add(newRow);
+                    tableCat.draw();
+                    //on input amount vaue chnaged last  row Amount
+                    $('#MapSalesMemoTable').on('input', 'input[type="number"]', function() {
+                        var Total=1;
+                        $('#MapSalesMemoTable tbody tr:last td:not(:last)').each(function(index) {
+                            var multiply = 1;
+                            var tdIndex = $(this).index();
+                            //total row
+                            $('#MapSalesMemoTable tbody tr:nth-last-child(3)').each(function() {
+                                    Total = parseFloat($(this).find('td').eq(index).text()) || 1;
+                                    multiply = multiply * Total;
+                            });
+                            //rate row
+                            $('#MapSalesMemoTable tbody  tr:nth-last-child(2)').each(function() {
+                                Total = parseFloat($(this).find('td').eq(index).find('input').val()) || 1;
+                                multiply = multiply * Total;
+                            });
+                            if(tdIndex !=0 && tdIndex !=1){
+                                $(this).text(multiply.toFixed(2));
+                            }
+
+                        });
+                    });
+                }
+            });
+
+        $("select[name='SalesMemoTable_length']").addClass("custom-select");
+        $('.dataTable').wrap('<div class="dataTables_scroll" />');
+        //Column total
+        $('#MapSalesMemoTable').on('input', 'input[type="number"]', function() {
+            var row = $(this).closest('tr');
+            var inputs = row.find('input[type="number"]');
+            var total = 0;
+
+            inputs.each(function() {
+                var value = parseFloat($(this).val()) || 0;
+                total += value;
+            });
+
+            row.find('.total-column').text(total.toFixed(2));
+        });
+
+        //last second row total
+        $('#MapSalesMemoTable').on('input', 'input[type="number"]', function() {
+
+            $('#MapSalesMemoTable tbody tr:nth-last-child(3) td:not(:last)').each(function(index) {
+                var sum = 0;
+                $('#MapSalesMemoTable tbody tr').not(':last').not(':nth-last-child(2)').each(function() {
+                    var inputValue = parseFloat($(this).find('td').eq(index).find('input').val()) || 0;
+                    sum += inputValue;
+                });
+                if(index!=0 && index!= 1){
+                    $(this).text(sum.toFixed(2));
+                }
+            });
+        });
+        function convertData(data) {
+            const result = [];
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    result.push(data[key]);
+                }
+            }
+
+            return result;
+        }
+        function saveFormData(formData){
+            debugger;
+            var done = false;
+            if($("#SalesDate").val() == "")
+            {
+                $("#SalesDateError").html("The Sales Date Filed is required.");
+                return false;
+            }
+             console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '/SalesMemo/Create',
+                data:JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function(response) {
+                    debugger;
+                   
+                    var done = false;
+                    if(response.data="true"){
+                        done = true;
+                        saveTable();
+                        return done;
+                    }else{
+                          done = false;
+                          return done;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+            
+        }
+        function saveTable(){
+            var tableData = $("#MapSalesMemoTable").DataTable().rows().data().toArray();
+                    var dataToSend = [];
+
+                $('#MapSalesMemoTable tbody tr').each(function(index, row) {
+                    var rowData = {};
+                    var c=2;
+                    $(this).find('input').each(function(data,index) {
+                    var columnName = $(this).find('input').attr('data-column'); 
+                    var value = $(this).val();
+                    rowData[data] = value;
+                    });
+                    dataToSend.push(rowData);
+                });
+                const convertedData = dataToSend.map(row => {
+                    if (Object.keys(row).length === 0) {
+                        return [];
+                    }
+
+                    return convertData(row);
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/SalesMemo/CreateTable',
+                    contentType: 'application/json',
+                    data:JSON.stringify(convertedData),
+                    success: function(response) {
+                        window.location = "/SalesMemo/Index";
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+        }
+        $('#CreateSalesForm').on('submit', function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            var done = saveFormData(formData);
+            if(done){
+                saveTable();
+            }
+        });
+        $("#ExportExcelTable").on("click",function(){
+             debugger;
+             var tableData = $("#MapSalesMemoTable").DataTable().rows().data().toArray();
+                    var dataToSend = [];
+
+                $('#MapSalesMemoTable tbody tr').each(function(index, row) {
+                    var rowData = {};
+                    $(this).find('input').each(function(data,index) {
+                    var columnName = $(this).find('input').attr('data-column'); 
+                    var value = $(this).val();
+                    rowData[data] = value;
+                    });
+                    dataToSend.push(rowData);
+                });
+                const convertedData = dataToSend.map(row => {
+                    if (Object.keys(row).length === 0) {
+                        return [];
+                    }
+
+                    return convertData(row);
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/SalesMemo/ExportExcelTable',
+                    contentType: 'application/json',
+                    data:JSON.stringify(convertedData),
+                    responseType: 'arraybuffer',
+                    success: function(data) {
+                        var binaryData = atob(data);
+
+                        var byteArray = new Uint8Array(binaryData.length);
+                        for (var i = 0; i < binaryData.length; i++) {
+                            byteArray[i] = binaryData.charCodeAt(i);
+                        }
+                        var blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'ProductSalesReport.xlsx';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+        });
+    });
+</script>
+

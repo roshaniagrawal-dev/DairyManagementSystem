@@ -1,0 +1,172 @@
+﻿@model List<DairyManagementSystem.Models.Company>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="lineblockRL">
+            <h1><i class="bi bi-database"></i> Manage Companies</h1>
+            <a class="pull-right end-50 actionBT" id="search-btn"><i class="bi bi-search"></i>&nbsp;<span>Search</span>  </a>
+            &nbsp;<a class="pull-right end-50 actionBT" id="add-btn" asp-action="Create" formmethod="get"><i class="bi bi-plus-circle"></i>&nbsp;   ADD </a>
+            &nbsp;<a class="pull-right end-50 actionBT" id="Export-Comp-btn" asp-action="ExportExcel"><i class="bi bi-filetype-xls"></i>&nbsp; Export Excel </a>
+        </div>
+    </div>
+    <br />
+
+    <form id="Serach_btn_comp" method="post">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input name="Code"id="Code" type="text" placeholder="Code" class="form-control cool-input" />
+                </div>
+                <div class="form-group">
+                    <input type="text" id="CompanyName" name="CompanyName" placeholder="Company Name" class="form-control cool-input" />
+                </div>
+                 <div class="form-group">
+                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="StartDate" name="StartDate" placeholder="Start Date" class="form-control cool-input" />
+                </div>
+        
+                <div class="form-group">
+                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="EndDate" name="EndDate" placeholder="End Date" class="form-control cool-input" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input type="text" maxlength="20" id="CompanyAddress" placeholder="Address" name="CompanyAddress" class="form-control cool-input" />
+                </div>
+                <div class="form-group">
+                    <input type="number" id="StateCode" name="StateCode" placeholder="State Code" class="form-control cool-input" />
+                </div>
+                <div class="form-group">
+                   <input type="text" maxlength="20" id="BankDetail" placeholder="Bank Detail" name="BankDetail" class="form-control cool-input" />
+                </div>
+               
+            </div>
+            <div class="col-lg-6">
+                 <div class="form-group">
+                    <select name="IsActiveStr" id="StatusId" class="form-control cool-input custom-select">
+                         <option value="">Status</option>
+                         <option value="true">Active</option>
+                         <option value="false">InActive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+       <div class="float-right">
+            <button type="submit" class="btn btn-primary">Search</button> <button type="reset" class="btn btn-primary">Reset</button>
+        </div>
+    </form>
+    <br />
+    <table class="table table-striped" id="CompanyTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Action</th>
+                <th>Code</th>
+                <th>Company Name</th>
+                <th>Company Posting Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Address</th>
+                <th>State Code</th>
+                <th>Bank Detail</th>
+                
+            </tr>
+        </thead>
+    </table>
+</div>
+<input type="hidden" value="@(TempData["Create"] ??"")" id="CreateAlert" />
+<input type="hidden" value="@(TempData["Delete"] ?? "")" id="DeleteAlert" />
+<input type="hidden" value="@(TempData["Edit"] ??"")" id="EditAlert" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+         $('#search-btn').click(function() {
+            $('#Serach_btn_comp').collapse('toggle');
+        });
+
+        var tableComp = $("#CompanyTable").DataTable({
+                "ajax": { url: "/Company/GetList" },
+                "columns": [
+                    {
+                        "targets": 0, "render": function (data, type, row, meta) {
+                            return meta.row + 1; // adds id to dataset
+                        }
+                    },
+                    {
+                        data: "companyId", "render": function (data) {
+                            return `<a href="/Company/Edit?id=${data}"><i class="bi bi-pencil"></i></a>
+                                               <a href="/Company/Delete?id=${data}" ><i class="bi bi-trash"></i></a>`;
+                        },
+                        "targets": 1
+
+                    },
+                    {
+                        data: "code",
+                        "targets": 2
+                    },
+                    {
+                        data: "companyName",
+                        "targets": 3
+                    },
+                    {
+                        data: "companyPostingDate",
+                        "targets": 4
+                    },
+                    {
+                        data: "startDate",
+                        "targets": 5
+                    },
+                    {
+                        data: "endDate",
+                        render: function(data, type, row) {
+                            return data || '---';
+                        },
+                        "targets": 6
+                    },
+                    {
+                        data: "companyAddress",
+                        "targets": 7
+                    },
+                    {
+                        data: "stateCode",
+                        "targets": 8
+                    },
+                    {
+                        data: "bankDetail",
+                        "targets": 9
+                    }
+                ],
+                serverSide: false,
+                "language": {
+                    "search": "",
+                    "searchPlaceholder": "Search",
+                    "lengthMenu": "_MENU_ Items"
+                }
+        });
+        $("select[name='CompanyTable_length']").addClass("custom-select");
+        $("#Serach_btn_comp").on("submit", function (e) {
+            e.preventDefault();
+            var FormData = $(this).serialize();
+
+            $.ajax({
+
+                url: "/Company/SearchDetails",
+                data: FormData,
+                type: "Post",
+                success: function (results) {
+                    tableComp.clear().draw();
+
+                    for (var i = 0; i < results.data.length; i++) {
+                        var newData = results.data[i];
+                        tableComp.row.add(newData);
+                    }
+                    tableComp.draw();
+
+                },
+                error: function (results) {
+
+                }
+
+            });
+        });
+    });
+</script>

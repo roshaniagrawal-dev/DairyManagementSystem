@@ -1,0 +1,285 @@
+﻿.Buttons_sales {
+    margin-top: -36px;
+    margin-left: 790px;
+}
+
+.containerHC{
+    margin-left:180px !important;
+}
+body {
+    background-color: rgba(169, 169, 169, 0.2) !important;
+}
+footer {
+}
+
+table.dataTable thead th {
+    border-bottom: none !important;
+}
+table.dataTable.no-footer td {
+    border-bottom: none !important;
+}
+table.dataTable.no-footer  {
+    border-bottom: 1px solid lightgrey !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    border: 1px solid lightgrey !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.6em 1em !important;
+    margin-left: 0px !important;
+}
+
+table.dataTable tfoot th {
+    border-top: none !important;
+}table.dataTable tfoot td {
+    border-bottom: none !important;
+}
+.dataTables_wrapper {
+    margin-top:40px !important;
+    margin-bottom:70px !important;
+    background-color: white !important;
+    padding : 26px !important;
+}
+table{
+    width : 100% !important;
+}
+#footerText{
+    color: white;
+}
+footer {
+    background-color: black;
+}
+
+#ProductTable_length label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-left: 36px;
+}
+#ProductTable_length select {
+    margin-left: -42px;
+}#CompanyTable_length label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-left: 36px;
+}
+
+#CompanyTable_length select {
+    margin-left: -42px;
+}#CategoryTable_length label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-left: 36px;
+}
+#CategoryTable_length select {
+    margin-left: -42px;
+}#VendorTable_length label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-left: 36px;
+}
+#VendorTable_length select {
+    margin-left: -42px;
+}#ClientTable_length label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-left: 36px;
+}
+#ClientTable_length select {
+    margin-left: -42px;
+}
+.Serach_btn_prod {
+    transition: none !important;
+}
+.lineblockRL {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+i.bi-database, i.bi-plus-circle, i.bi-search, i.bi-filetype-xls {
+    color: rgba(64, 64, 64, 400) !important;
+    font-size: 29px;
+}
+#add-btn, #Export-Prod-btn, #search-btn, #Export-Comp-btn,#Export-Cli-btn, #Export-Cat-btn, #Export-Ven-btn {
+    height: 40px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px;
+    font-size: 100% !important;
+    right: 229px !important;
+    align-items: center !important;
+    margin-left: 12px;
+    color: rgba(64, 64, 64, 0.8) !important;
+}
+h2 {
+    margin-top: 16px !important;
+}
+h1 {
+    margin-top: 20px !important;
+    flex: 1;
+    border-radius: 5px;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    font-size: 160% !important;
+    display: inline-block;
+}
+.cool-form-product {
+    margin-bottom: 51px !important;
+    margin-top: 35px !important;
+    padding: 17px;
+    background-color: #f9f9f9;
+    /*box-shadow: 0 0 10px rgba(0,0,0,0.1);*/
+}
+.cool-form {
+    margin-bottom: 51px !important;
+    margin-top: 53px !important;
+    padding: 21px;
+    background-color: #f9f9f9;
+}
+
+.cool-input {
+    /*box-shadow: 0 4px 8px rgba(0,0,0,0.1);*/
+    border: none;
+    border-bottom: 2px solid #007bff;
+    outline: none;
+    background-color: transparent;
+    margin-bottom: 20px;
+}
+
+.cool-input:focus {
+    border-bottom: 2px solid #0056b3;
+}
+
+.cool-btn {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cool-btn:hover {
+    background-color: #0056b3;
+}
+
+.cool-label {
+    font-size: 105% !important;
+    margin-bottom: 14px !important;
+}
+.custom-select {
+    
+    border-radius: 4px;
+    /*box-shadow: 0 4px 8px rgba(0,0,0,0.1);*/
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    color: #343a40;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+.custom-selectform {
+    border-radius: 4px;
+    /*box-shadow: 0 4px 8px rgba(0,0,0,0.1);*/
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    color: #343a40;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+i.bi-trash ,i.bi-pencil{
+    color: deepskyblue !important;
+}
+
+.lis-item-link {
+    text-decoration: none !important;
+    color: grey;
+    font-size: 120%;
+}
+
+
+#vertical-menu {
+    color: black;
+    background-color: white;
+    width: 185px;
+    height: 90%;
+    position: absolute;
+    word-spacing: 10px;
+}
+#vertical_toggle {
+    font-size: 30px;
+    text-decoration: none !important;
+}
+.vertical-menu ul {
+    margin-top: 19px;
+}
+.vertical-menu li {
+    white-space:nowrap;
+    padding: 10px;
+    margin-left: 30px;
+    max-height: 2000% !important;
+}
+
+.vertical-menu dmsi{
+    white-space: nowrap;
+    
+}
+.vertical-menu i {
+    color: #808080;
+    font-size : 20px;
+}
+.bento-menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    color: grey;
+}
+
+.bento-dot {
+    background-color: #808080;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+#MapSalesMemoTableEdit_wrapper table, #MapSalesMemoTable_wrapper table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    border: 1px solid #ccc !important;
+}
+
+#MapSalesMemoTableEdit_wrapper th, #MapSalesMemoTableEdit_wrapper td, #MapSalesMemoTable_wrapper th, #MapSalesMemoTable_wrapper td {
+    border: 1px solid #ccc !important;
+    padding: 8px !important;
+    text-align: center !important;
+}
+
+#MapSalesMemoTableEdit_wrapper th, #MapSalesMemoTable_wrapper th {
+    background-color: #f0f0f0 !important;
+}
+.dataTables_scroll {
+    overflow: auto;
+}
+#MapSalesMemoTableEdit_wrapper tr:nth-child(even), #MapSalesMemoTable_wrapper tr:nth-child(even) {
+    background-color: #f9f9f9 !important;
+}

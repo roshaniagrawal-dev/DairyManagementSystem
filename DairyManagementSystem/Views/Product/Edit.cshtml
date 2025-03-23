@@ -1,0 +1,88 @@
+﻿@model DairyManagementSystem.Models.Product
+
+<h1 style="margin-top: 23px !important;">Edit Product</h1>
+<div class="cool-form-product">
+    <form method="post" class="container mt-4">
+        <input asp-for="ProductId" type="hidden"/>
+        <input asp-for="ProductPostingDate" type="hidden"/>
+        <input asp-for="IsActive" type="hidden" value="true"/>
+        <div class ="row">
+            <div class="form-group col-sm-4">
+                <label asp-for="Code"  class="font-weight-bold cool-label">Code</label>
+                <input asp-for="Code" type="text" class="form-control cool-input" readonly/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="ProductName" class="font-weight-bold cool-label">Product Name</label>
+                <input asp-for="ProductName" class="form-control cool-input" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="Price" class="font-weight-bold cool-label">Selling Price</label>
+                <input asp-for="Price" class="form-control cool-input" type="number" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div> 
+            <div class="form-group col-sm-4">
+                <label asp-for="PurchaseRate" class="font-weight-bold cool-label">Purchase Rate</label>
+                <input asp-for="PurchaseRate" class="form-control cool-input" type="number"/>
+                <span asp-validation-for="PurchaseRate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="Hsnsaccode" class="font-weight-bold cool-label">HSN/SAC Code</label>
+                <input asp-for="Hsnsaccode" class="form-control cool-input" />
+                <span asp-validation-for="Hsnsaccode" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="Igstrate" class="font-weight-bold cool-label">IGST Rate</label>
+                <input asp-for="Igstrate" class="form-control cool-input" type="number"/>
+                <span asp-validation-for="Igstrate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="Cgstrate" class="font-weight-bold cool-label">CGST Rate</label>
+                <input asp-for="Cgstrate" class="form-control cool-input" type="number"/>
+                <span asp-validation-for="Cgstrate" class="text-danger"></span>
+            </div> 
+            <div class="form-group col-sm-4">
+                <label asp-for="Sgstrate" class="font-weight-bold cool-label">SGST Rate</label>
+                <input asp-for="Sgstrate" class="form-control cool-input" type="number" />
+                <span asp-validation-for="Sgstrate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="CategoryId" class="font-weight-bold cool-label">Category </label>
+                <select asp-for="CategoryId" asp-items="ViewBag.CategoryListEdit" class="form-control cool-input custom-select">
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="CompanyId" class="font-weight-bold cool-label">Company</label>
+                <select asp-for="CompanyId" asp-items="ViewBag.CompanyListEdit" class="form-control cool-input custom-select">
+                </select>
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
+            </div>
+             <div class="form-group col-sm-4">
+                <label asp-for="VendorId" class="font-weight-bold cool-label">Vendor</label>
+                <select asp-for="VendorId" asp-items="ViewBag.VenListEdit" class="form-control cool-input custom-select">
+                </select>
+                <span asp-validation-for="VendorId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="TypeId" class="font-weight-bold cool-label">Type</label>
+                <select asp-for="TypeId" asp-items="ViewBag.TypeListEdit" class="form-control cool-input custom-select">
+                </select>
+                <span asp-validation-for="TypeId" class="text-danger"></span>
+            </div>
+             <div class="form-group col-sm-4">
+                <label asp-for="UnitId" class="font-weight-bold cool-label">Unit</label>
+                <select asp-for="UnitId" asp-items="ViewBag.UnitListEdit" class="form-control cool-input custom-select">
+                </select>
+                <span asp-validation-for="UnitId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label asp-for="ClientId" class="font-weight-bold cool-label">Client</label>
+                <select asp-for="ClientId" asp-items="ViewBag.ClientList" class="form-control cool-input custom-select">
+                </select>
+                <span asp-validation-for="ClientId" class="text-danger"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block cool-btn">Save</button>
+    </form>
+</div>

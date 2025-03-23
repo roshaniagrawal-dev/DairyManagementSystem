@@ -1,0 +1,119 @@
+﻿@model List<DairyManagementSystem.Models.Category>
+
+<div class="container mt-4">
+    <div class="lineblockRL">
+            <h1><i class="bi bi-database"></i> Manage Categories</h1>
+            <a class="pull-right end-50 actionBT" id="search-btn"><i class="bi bi-search"></i>&nbsp;<span>Search</span>  </a>
+            &nbsp;<a class="pull-right end-50 actionBT" id="add-btn" asp-action="Create" formmethod="get"><i class="bi bi-plus-circle"></i>&nbsp;   ADD </a>
+            &nbsp;<a class="pull-right end-50 actionBT" id="Export-Cat-btn" asp-action="ExportExcel"><i class="bi bi-filetype-xls"></i>&nbsp; Export Excel </a>
+    </div>
+    <br />
+    <form id="Search_btn_cat" method="post">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <input name="CategoryName" type="text" id="CategoryName" placeholder="Category Name" class="form-control cool-input" />
+                </div>
+                <div class="form-group">
+                    <input name="Code"id="Code" type="text" placeholder="Code" class="form-control cool-input" />
+                </div> 
+            </div>
+             <div class="col-lg-6">
+                     <div class="form-group">
+                        <select name="IsActiveStr" id="StatusId" class="form-control cool-input custom-select">
+                             <option value="">Status</option>
+                             <option value="true">Active</option>
+                             <option value="false">InActive</option>
+                        </select>
+                    </div>
+            </div>
+        </div>
+        <div class="float-right">
+            <button type="submit" class="btn btn-primary">Search</button> <button type="reset" class="btn btn-primary">Reset</button>
+        </div>
+    </form>
+    <br />
+
+    <table class="table table-striped" id="CategoryTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Action</th>
+                <th>Code</th>
+                <th>Category Name</th>
+                <th>Posting Date</th>
+                
+            </tr>
+        </thead>
+    </table>
+</div>
+<input type="hidden" value="@(TempData["Create"] ??"")" id="CreateAlert"/>
+<input type="hidden" value="@(TempData["Delete"] ?? "")" id="DeleteAlert"/>
+<input type="hidden" value="@(TempData["Error"] ??"")" id="Error"/>
+<input type="hidden" value="@(TempData["Edit"] ??"")" id="EditAlert"/>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+         $('#search-btn').click(function() {
+            $('#Search_btn_cat').collapse('toggle');
+        });
+        var tableCat = $("#CategoryTable").DataTable({
+            "ajax": { url: "/Category/GetList" },
+            "columns": [
+                {
+                    "targets": 0, 
+                    "render": function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {
+                    data: "categoryId", "render": function (data) {
+                        return `<a href="/Category/Edit?id=${data}"><i class="bi bi-pencil"></i></a>
+                                       <a href="/Category/Delete?id=${data}" ><i class="bi bi-trash"></i></a>`;
+                    },
+                    "targets": 1
+
+                },
+                {
+                    data: "code",
+                    "targets": 2
+                },
+                {
+                    data: "categoryName",
+                    "targets": 3
+                },
+                {
+                    data: "categoryPostingDate",
+                    "targets": 4
+                }
+            ],
+            serverSide: false,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search",
+                "lengthMenu": "_MENU_ Items"
+            }
+        });
+        $("select[name='CategoryTable_length']").addClass("custom-select");
+        $("#Search_btn_cat").on("submit", function (e) {
+            e.preventDefault();
+            var FormData = $(this).serialize();
+            $.ajax({
+                url: "/Category/SearchDetails",
+                data: FormData,
+                type: "Post",
+                success: function (results) {
+                    debugger;
+                    tableCat.clear().draw();
+                    for (var i = 0; i < results.data.length; i++) {
+                        var newData = results.data[i];
+                        tableCat.row.add(newData);
+                    }
+                    tableCat.draw();
+                },
+                error: function (results) {
+                }
+            });
+        });
+    });
+</script>
